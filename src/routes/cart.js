@@ -10,4 +10,12 @@ router.post('/',(req,res)=>{
     })
 })
 
+//REVISAR!!!    
+router.delete('/:id',(req,res)=>{
+    let id = req.params.id;
+    cartService.delete(id).then(result=>{
+        res.send({status:"success", message:"Cart deleted"})
+    }).catch(res.send({status:404, message:'Cart not found'}))
+})
+
 export default router;
