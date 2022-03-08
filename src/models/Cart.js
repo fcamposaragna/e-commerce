@@ -6,7 +6,7 @@ export default class Cart{
         this.data = data;
     }
     static get model(){
-        return 'Carts';
+        return 'carts';
     }
     static get schema(){
         return{

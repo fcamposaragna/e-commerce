@@ -18,8 +18,8 @@ export default class Dao{
 
         this.models ={
             [User.model]:mongoose.model(User.model,userSchema),
-            [Product.model]:mongoose.model(Product.model, productSchema),
-            [Cart.model]:mongoose.model(Cart.model,cartSchema)
+            [Cart.model]:mongoose.model(Cart.model,cartSchema),
+            [Product.model]:mongoose.model(Product.model, productSchema)
         }
     }
     findOne = async(options,entity)=>{
