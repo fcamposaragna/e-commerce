@@ -18,8 +18,7 @@ export default class User{
             age:Number,
             phone:Number,
             avatar:String,
-            carts:[],
-            avatar:String
+            carts:[]
         }
     }
 }

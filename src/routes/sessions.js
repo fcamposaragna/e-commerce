@@ -24,4 +24,10 @@ router.get('/current', passportCall('jwt'),(req,res)=>{
     let user = req.user;
     res.send(user)
 })
+router.get('/profile',(req,res)=>{
+    let user = req.user;
+    console.log(user)
+    res.send({message:'profile'})
+})
+
 export default router;
