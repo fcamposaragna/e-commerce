@@ -13,6 +13,7 @@
             <td>{{this.nombre}}</td>
             <td>${{this.precio}}</td>
             <td><img class="imagen-tabla" src={{this.thumbnail}}></td>
+            <td><button onclick='addProduct("{{this._id}}")'>Agregar a carrito</button></td>
         </tr>
         {{/each}}
     </tbody>

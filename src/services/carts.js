@@ -8,7 +8,7 @@ export default class CartService extends GenericQueries{
     }
     addProduct = async(id_cart,product)=>{
         try{
-            let file = await this.dao.updateOne({_id:id_cart},{$push:{productos:product}})
+            let file = await this.update({_id:id_cart},{$push:{productos:product._id}})
             return{status:"success", message:"Product added", payload:file}
         }catch(error){
             logger.error(error)

@@ -1,7 +1,6 @@
 const socket = io();
 
 socket.on('showProducts', data=>{
-    console.log(data)
     fetch('../templates/tableProducts.handlebars').then(string=>string.text()).then(template=>{
         const templateObject = {
             products : data
@@ -13,6 +12,24 @@ socket.on('showProducts', data=>{
     })
 })
 
+addProduct = (id)=>{
+    console.log(id)
+    fetch('/session/current').then(result=>result.json()).then(json=>{
+        const cart = json.carts[0]
+            let body = {
+            id_prod: id
+        }
+        console.log(body)
+        fetch(`/api/carrito/${cart}/productos`,{
+            method:'POST',
+            body : JSON.stringify(body),
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }).then(result=>result.json()).then(json=>console.log(json))
+        
+    })
+}
 
 miFunc = ()=>{
     fetch('/session/current').then(result=>result.json()).then(json=>{

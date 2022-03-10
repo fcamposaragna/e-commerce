@@ -15,6 +15,13 @@ router.get('/:id/productos', (req,res)=>{
         res.send(result)
     })
 })
+router.post('/:id/productos',(req,res)=>{
+    let id = req.params.id;
+    let id_prod = req.body.id_prod;
+    cartService.addProduct(id,id_prod).then(result=>{
+        res.send(result)
+    })
+})
 //REVISAR!!!    
 router.delete('/:id',(req,res)=>{
     let id = req.params.id;
