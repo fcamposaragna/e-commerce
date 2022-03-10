@@ -2,6 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import { engine } from 'express-handlebars';
+import { Server } from 'socket.io';
 
 import sessionRouter from './routes/sessions.js';
 import cartRouter from './routes/cart.js';
@@ -13,6 +14,7 @@ import {__dirname} from './dirname.js'
 const app = express();
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT,()=>logger.info(`Listening on port ${PORT}`));
+export const io = new Server(server);
 
 app.engine('handlebars', engine())
 app.set('views',__dirname+ '/views')

@@ -1,7 +1,7 @@
 import passport from 'passport';
 import local from 'passport-local';
 import logger from '../utils/logger.js';
-import { userService } from '../services/services.js';
+import { userService, cartService } from '../services/services.js';
 import { createHash, isValidPassword } from '../utils/utils.js';
 import {cookieExtractor} from '../utils/cookieExtractor.js'
 import jwt from 'passport-jwt';
@@ -13,12 +13,12 @@ const ExtractJWT = jwt.ExtractJwt;
 
 const initializePassport= ()=>{
     passport.use("register",new LocalStrategy({passReqToCallback:true,usernameField:"email",session:false},async(req,username,password,done)=>{
-        console.log('local')
         let {first_name,last_name,email,address,age,phone} = req.body;
         try{
             if(!req.file) return done(null,false,{message:`Avatar couldn't upload`});
             let user = await userService.getBy({email:email});
             if(user) return done(null,false,{message:'User already exists'});
+            let cart = await cartService.save({});
             const newUser = {
                 first_name,
                 last_name,
@@ -27,7 +27,7 @@ const initializePassport= ()=>{
                 address,
                 age,
                 phone,
-                carts:[],
+                carts:cart._id,
                 avatar:req.file.filename
             }
             let result = await userService.save(newUser);

@@ -9,7 +9,12 @@ router.post('/',(req,res)=>{
         res.send(result)
     })
 })
-
+router.get('/:id/productos', (req,res)=>{
+    let id = req.params.id;
+    cartService.getBy({_id:id}).then(result=>{
+        res.send(result)
+    })
+})
 //REVISAR!!!    
 router.delete('/:id',(req,res)=>{
     let id = req.params.id;

@@ -1,0 +1,14 @@
+const socket = io();
+
+socket.on('showProducts', data=>{
+    console.log(data)
+    fetch('../templates/tableProducts.handlebars').then(string=>string.text()).then(template=>{
+        const templateObject = {
+            products : data
+        }
+        const processedTemplate = Handlebars.compile(template)
+        const html = processedTemplate(templateObject);
+        let div = document.getElementById('product-container');
+        div.innerHTML=html
+    })
+})

@@ -18,7 +18,12 @@ export default class User{
             age:Number,
             phone:Number,
             avatar:String,
-            carts:[]
+            carts:{
+                type:[{
+                    type: Schema.Types.ObjectId,
+                    ref: 'carts'
+                }]
+            }
         }
     }
 }
