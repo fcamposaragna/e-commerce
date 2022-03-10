@@ -12,3 +12,12 @@ socket.on('showProducts', data=>{
         div.innerHTML=html
     })
 })
+
+
+miFunc = ()=>{
+    fetch('/session/current').then(result=>result.json()).then(json=>{
+        const id = json.carts[0]
+        location.replace(`/api/carrito/${id}/productos`)
+    })
+    
+}

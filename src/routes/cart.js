@@ -1,6 +1,6 @@
 import express from "express";
 
-import { cartService } from "../services/services.js";
+import { cartService, productService } from "../services/services.js";
 const router = express.Router();
 
 

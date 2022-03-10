@@ -6,11 +6,14 @@ import { productService } from "../services/services.js";
 import { passportCall } from "../middlewares/passportMiddlewares.js";
 import config from '../config/config.js';
 import { io } from "../app.js";
+import { sendEmail } from '../utils/nodemailer.js'
 
 const router = express.Router();
 
 
 router.post('/register',uploader.single('avatar'),passportCall('register'),(req,res)=>{
+    const user = req.user
+    sendEmail(user)
     res.send({message:"Signed up"})
 })
 router.post('/login',passportCall('login'),(req,res)=>{
