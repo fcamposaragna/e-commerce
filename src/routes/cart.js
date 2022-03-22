@@ -18,11 +18,11 @@ router.get('/:id/productos', (req,res)=>{
 router.post('/:id/productos',(req,res)=>{
     let id = req.params.id;
     let id_prod = req.body.id_prod;
-    cartService.addProduct(id,id_prod).then(result=>{
-        res.send(result)
-    })
+    cartService.addProductInCart(id,id_prod).then(result=>{
+        console.log(result)
+    });
 })
-//REVISAR!!!    
+   
 router.delete('/:id',(req,res)=>{
     let id = req.params.id;
     cartService.delete(id).then(result=>{

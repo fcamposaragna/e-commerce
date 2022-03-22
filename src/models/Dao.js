@@ -30,7 +30,7 @@ export default class Dao{
     getAll = async(options,entity)=>{
         if(!this.models[entity]) throw new Error(`Entity ${entity} not in dao schemas`)
         let results = await this.models[entity].find(options);
-        return results.map(result=>result.toObject())
+        return results.map(result=>result.toObject());
     }
     insert = async(document,entity)=>{
         if(!this.models[entity]) throw new Error(`Entity ${entity} not in dao schemas`)
@@ -58,5 +58,14 @@ export default class Dao{
     exists = async(entity,options)=>{
         if(!this.models[entity]) throw new Error(`Entity ${entity} not in dao schemas`)
         return this.models[entity].exists(options)
+    }
+    addProduct = async(id_cart, product, entity)=>{
+        try{
+            let file = await this.models[entity].updateOne({_id:id_cart},{$push:{productos:product}});
+            return file;
+        }
+        catch(error){
+            logger.error(`Error: ${error}`);
+        }
     }
 }
