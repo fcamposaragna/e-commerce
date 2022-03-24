@@ -12,6 +12,10 @@ router.post('/',(req,res)=>{
 router.get('/:id/productos', (req,res)=>{
     let id = req.params.id;
     cartService.getBy({_id:id}).then(result=>{
+        // const payload = result.productos.map(product=>{
+        //     productService.getBy({_id:product})
+        // })
+        // res.send(payload)
         res.send(result)
     })
 })

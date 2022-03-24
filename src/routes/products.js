@@ -1,19 +1,19 @@
 import express from "express";
 import { productService } from "../services/services.js";
 import uploader from "../utils/uploader.js";
-import config from "../config/config.js";
+import productDTO from '../dtos/productDTO.js'
 const router = express.Router();
 
 router.get('/',(req,res)=>{
     productService.getAll().then(result=>{
-        res.send(result)
+        res.send(result.map(product=>new productDTO(product)))
     })
 })
 
 router.get('/:id', (req,res)=>{
     let id = req.params.id;
     productService.getBy({_id:id}).then(result=>{
-        res.send(result);
+        res.send(new productDTO(result));
     })
 })
 
@@ -26,11 +26,11 @@ router.post('/', uploader.single('thumbnail'), (req,res)=>{
         res.send(result);
     })
 })
-//REVISAR!
+
 router.put('/:id',(req,res)=>{
     let body = req.body;
     let id = req.params.id;
-    productService.update(id).then(result=>{
+    productService.update(id,body).then(result=>{
         res.send(result)
     })
 })
