@@ -10,10 +10,15 @@ export default class Dao{
             logger.error(error);
             process.exit();
         })
+        const populateProducts = function(next) {
+            this.populate(Product.model);
+            next();
+          };
         
         const timestamp = {timestamps:{createdAt:'created_at',updatedAt:'updated_at'}};
         const userSchema = mongoose.Schema(User.schema,timestamp);
         const cartSchema = mongoose.Schema(Cart.schema,timestamp);
+        //userSchema.pre('findOne', populateProducts)
         const productSchema = mongoose.Schema(Product.schema,timestamp);
 
         this.models ={

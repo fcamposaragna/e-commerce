@@ -5,5 +5,8 @@ form.addEventListener('submit', function(event){
     fetch('/session/register',{
         method:'POST',
         body:info
-    }).then(result=>result.json()).then(json=>console.log(json))
+    }).then(result=>result.json()).then(json=>{
+        if(json.error) return alert('Ese usuario ya está registrado')
+        else location.href='/'
+    })
 })

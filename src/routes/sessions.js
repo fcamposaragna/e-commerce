@@ -2,11 +2,12 @@ import express from "express";
 import jwt from 'jsonwebtoken';
 
 import uploader from '../utils/uploader.js'
-import { productService } from "../services/services.js";
+import { productService, cartService } from "../services/services.js";
 import { passportCall } from "../middlewares/passportMiddlewares.js";
 import config from '../config/config.js';
 import { io } from "../app.js";
-import { sendEmail } from '../utils/nodemailer.js'
+import { sendEmail, sendEmailConfirmation } from '../utils/nodemailer.js'
+import { sendWhatsapp } from "../utils/twilio.js";
 
 const router = express.Router();
 
@@ -37,9 +38,24 @@ router.get('/profile',passportCall('jwt'),(req,res)=>{
     })
     res.render('profile', user)
 })
+router.get('/confirm',(req,res)=>{
+    res.render('confirm')
+})
+router.post('/confirm',async (req,res)=>{
+    let body = req.body;
+    let cart = await cartService.getBy({_id:body.products})
+    const processedObject = {
+        first_name : body.first_name,
+        last_name : body.last_name,
+        products: cart.productos
+    }
+    sendWhatsapp(processedObject);
+    //sendEmailConfirmation(processedObject)
+})
 router.get('/logout',(req,res)=>{
     res.clearCookie('JWT_COOKIE')
-    res.send({message:'Logged Out'})
+    res.redirect('/')
+
 })
 
 export default router;

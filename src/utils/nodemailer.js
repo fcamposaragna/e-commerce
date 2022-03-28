@@ -22,3 +22,13 @@ export const sendEmail = (user)=>{
     }
     return transport.sendMail(email);
 };
+export const sendEmailConfirmation = (data)=>{
+    const email = {
+        from:'e-Commerce mail <e-Commerce>',
+        to: config.nodemailer.USER,
+        subject: 'Nueva compra!',
+        text: `El usuario ${data.first_name} ${data.last_name} ha realizado una nueva compra:
+        Productos: ${data.products}`
+    }
+    return transport.sendMail(email)
+}
