@@ -44,13 +44,16 @@ router.get('/confirm',(req,res)=>{
 router.post('/confirm',async (req,res)=>{
     let body = req.body;
     let cart = await cartService.getBy({_id:body.products})
+    let prodctProcessed = cart.productos.map(x=>{
+        return x.nombre
+    })
     const processedObject = {
         first_name : body.first_name,
         last_name : body.last_name,
-        products: cart.productos
+        products: prodctProcessed
     }
     sendWhatsapp(processedObject);
-    //sendEmailConfirmation(processedObject)
+    sendEmailConfirmation(processedObject)
 })
 router.get('/logout',(req,res)=>{
     res.clearCookie('JWT_COOKIE')

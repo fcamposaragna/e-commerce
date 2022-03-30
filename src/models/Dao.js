@@ -11,14 +11,14 @@ export default class Dao{
             process.exit();
         })
         const populateProducts = function(next) {
-            this.populate(Product.model);
+            this.populate('productos');
             next();
           };
         
         const timestamp = {timestamps:{createdAt:'created_at',updatedAt:'updated_at'}};
         const userSchema = mongoose.Schema(User.schema,timestamp);
         const cartSchema = mongoose.Schema(Cart.schema,timestamp);
-        //userSchema.pre('findOne', populateProducts)
+        cartSchema.pre('findOne', populateProducts)
         const productSchema = mongoose.Schema(Product.schema,timestamp);
 
         this.models ={
@@ -44,7 +44,7 @@ export default class Dao{
             let result = await instance.save();
             return result?result.toObject():null;
         }catch(error){
-            console.log(error);
+            logger.log(error);
             return null;
         }
     }
@@ -71,6 +71,14 @@ export default class Dao{
         }
         catch(error){
             logger.error(`Error: ${error}`);
+        }
+    }
+    deleteProduct = async(id_cart,product,entity)=>{
+        try{
+            const cart = await this.models[entity].updateOne({"_id":id_cart}, {$pull:{productos:product}});
+            return cart?cart.toObject():null
+        }catch(error){
+            logger.error
         }
     }
 }
