@@ -8,7 +8,7 @@ export default class CartService extends GenericQueries{
     }
     // addProduct = async(id_cart,product)=>{
     //     try{
-    //         //let file = await this.update({_id:id_cart},{$push:{productos:product._id}})
+    //         //let file = await this.update({_id:id_cart},{$push:{productos:product._id}}) FALTABA EL CART.MODEL AL FINAL!!! REVISAR CLASE!
     //         let file = await this.dao[Cart.model].update({_id:id_cart},{$push:{productos:product._id}})
     //         return file
     //     }catch(error){
