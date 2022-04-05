@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon src/app.js",
-    "test": "mocha src/tests/apiTest.test.js"
+    "test": "mocha src/tests/apiTest.test.js --timeout 1500"
   },
   "keywords": [],
   "author": "",
