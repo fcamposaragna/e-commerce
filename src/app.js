@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 import cors from 'cors';
+import { messageService } from './services/services.js'
 
 import sessionRouter from './routes/sessions.js';
 import cartRouter from './routes/cart.js';
@@ -22,10 +23,11 @@ const io = new Server(server, {
     }
 });
 
-app.engine('handlebars', engine())
-app.set('views',__dirname+ '/views')
-app.set('view engine', 'handlebars')
+// app.engine('handlebars', engine())
+// app.set('views',__dirname+ '/views')
+// app.set('view engine', 'handlebars')
 
+//TWILIO CREDENTIALS!!!
 app.use(cors({credentials:true, origin:'http://localhost:3000'}))
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -35,7 +37,7 @@ app.use(passport.initialize());
 app.use(express.static(__dirname+'/public'));
 
 
-app.use('/session',sessionRouter);
+app.use('/api/session',sessionRouter);
 app.use('/api/carts', cartRouter);
 app.use('/api/products', productRouter);
 
@@ -64,7 +66,7 @@ io.on('connection', async socket=>{
         }
     }
     io.emit('users',connectedSockets)
-    let logs = await messageService.getAllAndPopulate();
+    let logs = await messageService.getAll();
     io.emit('logs',logs);
     socket.on('disconnect',reason=>{
         delete connectedSockets[socket.id]
@@ -75,7 +77,7 @@ io.on('connection', async socket=>{
                 author:connectedSockets[socket.id].id,
                 content: data
             })
-            let logs = await messageService.getAllAndPopulate();
+            let logs = await messageService.getAll();
             io.emit('logs',logs);
         }
     });

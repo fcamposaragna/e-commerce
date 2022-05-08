@@ -12,7 +12,7 @@ export default class Dao{
             process.exit();
         })
         const populateProducts = function(next) {
-            this.populate('productos');
+            this.populate('products');
             next();
         };
         const populateMessages = function(next){
@@ -26,7 +26,7 @@ export default class Dao{
         cartSchema.pre('findOne', populateProducts)
         const productSchema = mongoose.Schema(Product.schema,timestamp);
         const messageSchema = mongoose.Schema(Message.schema, timestamp);
-        messageSchema.pre('find', populateMessages)
+        //messageSchema.pre('find', populateMessages)
 
         this.models ={
             [User.model]:mongoose.model(User.model,userSchema),
@@ -35,6 +35,7 @@ export default class Dao{
             [Message.model]:mongoose.model(Message.model, messageSchema)
         }
     }
+
     findOne = async(options,entity)=>{
         if(!this.models[entity]) throw new Error(`Entity ${entity} not in dao schemas`)
         let result  = await this.models[entity].findOne(options);
@@ -74,7 +75,7 @@ export default class Dao{
     }
     addProduct = async(id_cart, product, entity)=>{
         try{
-            let file = await this.models[entity].updateOne({_id:id_cart},{$push:{productos:product}});
+            let file = await this.models[entity].updateOne({_id:id_cart},{$push:{products:product}});
             return file;
         }
         catch(error){
@@ -83,7 +84,7 @@ export default class Dao{
     }
     deleteProduct = async(id_cart,product,entity)=>{
         try{
-            const cart = await this.models[entity].updateOne({"_id":id_cart}, {$pull:{productos:product}});
+            const cart = await this.models[entity].updateOne({"_id":id_cart}, {$pull:{products:product}});
             return cart?cart.toObject():null
         }catch(error){
             logger.error

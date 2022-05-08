@@ -14,10 +14,9 @@ export default class User{
             password:String,
             first_name:String,
             last_name:String,
-            address:String,
-            age:Number,
-            phone:Number,
-            avatar:String,
+            role:String,
+            phone:String,
+            profile_picture:String,
             carts:{
                 type:[{
                     type: Schema.Types.ObjectId,

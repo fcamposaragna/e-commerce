@@ -10,7 +10,7 @@ export default class Cart{
     }
     static get schema(){
         return{
-            productos:{
+            products:{
                 type:[{
                     type: Schema.Types.ObjectId,
                     ref: 'products'

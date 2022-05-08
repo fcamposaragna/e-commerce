@@ -4,7 +4,7 @@ import logger from "../utils/logger.js";
 const getAllProducts = async (req, res)=>{
     try{
         productService.getAll().then(result=>{
-            res.send({status:'success', payload:result});
+        res.send({status:'success', payload:result});
         })
     }catch(error){
         logger.error(error);
@@ -15,7 +15,7 @@ const getById = async (req,res)=>{
     try{
         let id = req.params.id;
         productService.getBy({_id:id}).then(result=>{
-            res.send({status:'success', payload: result});
+        res.send({status:'success', payload: result});
         })
     }catch(error){
         logger.error(error);
@@ -24,17 +24,12 @@ const getById = async (req,res)=>{
 };
 const saveProduct = async (req,res)=>{
     try{
-        (req,res)=>{
-            let product = req.body;
-            let file = req.file;
-            console.log(file)
-            product.thumbnail = req.protocol+"://"+req.hostname+":"+8080+'/images/'+file.filename;
-            console.log(product)
-            productService.save(product).then(result=>{
-                res.send({status:'success', payload:result});
-            })
-        }
-
+        let product = req.body;
+        let file = req.file;
+        product.thumbnail = req.protocol+"://"+req.hostname+":"+8080+'/images/'+file.filename;
+        productService.save(product).then(result=>{
+            res.send({status:'success', payload:result});
+        });
     }catch(error){
         logger.error(error);
     }

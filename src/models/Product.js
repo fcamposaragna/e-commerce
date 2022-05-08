@@ -9,11 +9,11 @@ export default class Product{
     }
     static get schema(){
         return{
-            nombre:String,
-            descripcion:String,
-            codigo:String,
+            title:String,
+            description:String,
+            code:String,
             thumbnail:String,
-            precio:Number,
+            price:Number,
             stock:Number
         }
     }
