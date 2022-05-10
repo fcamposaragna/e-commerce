@@ -73,21 +73,4 @@ export default class Dao{
         if(!this.models[entity]) throw new Error(`Entity ${entity} not in dao schemas`)
         return this.models[entity].exists(options)
     }
-    addProduct = async(id_cart, product, entity)=>{
-        try{
-            let file = await this.models[entity].updateOne({_id:id_cart},{$push:{products:product}});
-            return file;
-        }
-        catch(error){
-            logger.error(`Error: ${error}`);
-        }
-    }
-    deleteProduct = async(id_cart,product,entity)=>{
-        try{
-            const cart = await this.models[entity].updateOne({"_id":id_cart}, {$pull:{products:product}});
-            return cart?cart.toObject():null
-        }catch(error){
-            logger.error
-        }
-    }
 }

@@ -1,4 +1,3 @@
-import { RestoreAssistantInstance } from "twilio/lib/rest/autopilot/v1/restoreAssistant.js";
 import { cartService, productService } from "../services/services.js";
 import logger from "../utils/logger.js";
 
@@ -9,21 +8,17 @@ const saveCart = async (req, res)=>{
         })
     }catch(error){
         logger.error(error);
-        res.status(404).send({status:'error', error:error})
+        res.status(500).send({status:'error', error:error})
     }
 };
 const getById = async (req,res)=>{
     try{
         let id = req.params.cid;
-        // cartService.getBy({_id:id}).then(result=>{
-        // res.send({status:'success', payload:result})
-    // })
         let cart = await cartService.getBy({_id:id});
-        console.log(cart)
         res.send({status:'success', payload:cart});
     }catch(error){
         logger.error(error);
-        res.status(404).send({status:'error', error:error})
+        res.status(500).send({status:'error', error:error})
     }
 };
 const addProduct = async (req,res)=>{
@@ -55,21 +50,10 @@ const addProduct = async (req,res)=>{
         res.send({status:'success', quantityChanged, newQuantity:quantity, message:'Product added in cart'});
     }catch(error){
         logger.error(error);
-        res.status(404).send({status:'error', error:error});
+        res.status(500).send({status:'error', error:error});
     }
 };
-const deleteCart = async (req,res)=>{
-    let id = req.params.id;
-    try{
-        cartService.delete(id).then(result=>{
-            res.send({status:"success", message:"Cart deleted"})
-        }).catch(res.send({status:'error', error:'Cart not found'}))
 
-    }catch(error){
-        logger.error(error);
-        res.status(404).send({status:'error', error:error});
-    }
-};
 const deleteProduct = async (req,res)=>{
     let { cid, pid } = req.params;
     try{
@@ -94,14 +78,72 @@ const deleteProduct = async (req,res)=>{
         }
     }catch(error){
         logger.error(error);
-        res.status(404).send({status:'error', error:error});
+        res.status(500).send({status:'error', error:error});
     }
 }
-
+const updateCart = async(req,res)=>{
+    let { cid } = req.params;
+    let { products } = req.body;
+    let stockLimitation = false;
+    //Check cart
+    let cart = await cartService.getBy({_id:cid});
+    if(!cart)  return res.status(404).send({status:"error",error:"Can't find cart"});
+    //Check the availability of each product in the cart
+    for(const element of cart.products){
+        let product = await productService.getBy({_id:element.product});
+        //Get the product in actual cart in order to make a comparison between que current quantity and requested quantity
+        let associatedProductInCart = cart.products.find(element=>element.product._id.toString()===product._id.toString());
+        //Now get the product in the requested product to check out the quantity
+        let associatedProductInInput = products.find(element=>element.product.toString()===product._id.toString());
+        if(associatedProductInCart.quantity!==associatedProductInInput.quantity){
+            //Ask if the requested quantity is less than the current quantity of the cart
+            if(associatedProductInCart.quantity>associatedProductInInput.quantity){
+                let difference = associatedProductInCart.quantity - associatedProductInInput.quantity;
+                associatedProductInCart.quantity = associatedProductInInput.quantity;
+                product.stock+=difference;
+                await productService.update(product._id,product);
+            }else{
+                let difference = associatedProductInInput.quantity - associatedProductInCart.quantity;
+                if(product.stock>=difference){//It's ok. We can add it to the cart
+                    product.stock -=difference;
+                    await productService.update(product._id,product);
+                    associatedProductInCart.quantity = associatedProductInInput.quantity;
+                }
+                else{//There's no sufficient stock to add to the cart
+                    stockLimitation=true;
+                    associatedProductInCart.quantity +=product.stock;
+                    product.stock=0;
+                    await productService.update(product._id,product);
+                }
+            }
+        }
+        else{
+            console.log("La cantidad para este producto no cambió")
+        }
+    }
+    await cartService.update(cid,cart);
+    res.send({status:"success",stockLimitation})
+}
+const confirmPurchase = async(req,res)=>{
+    let { cid } = req.params;
+    try{
+        //Check cart
+        let cart = await cartService.getBy({_id:cid});
+        if(!cart) return res.status(404).send({status:'error', error:'Cart Not Found'});
+        //Empty cart
+        cart.products=[];
+        await cartService.update(cid, cart);
+        res.status(200).send({status:'success', message:'Finished purchase'});
+    }catch(error){
+        logger.error(error);
+        res.stauts(500).send({status:'error', error:error});
+    }
+}
 export default {
     saveCart,
     getById,
     addProduct,
-    deleteCart,
-    deleteProduct
+    deleteProduct,
+    updateCart,
+    confirmPurchase
 }

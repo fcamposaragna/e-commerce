@@ -8,7 +8,7 @@ const getAllProducts = async (req, res)=>{
         })
     }catch(error){
         logger.error(error);
-        res.send({status:'error', error:error});
+        res.status(500).send({status:'error', error:error});
     }
 };
 const getById = async (req,res)=>{
@@ -19,7 +19,7 @@ const getById = async (req,res)=>{
         })
     }catch(error){
         logger.error(error);
-        res.send({status:'error', error:error})
+        res.status(500).send({status:'error', error:error})
     }
 };
 const saveProduct = async (req,res)=>{
@@ -32,6 +32,7 @@ const saveProduct = async (req,res)=>{
         });
     }catch(error){
         logger.error(error);
+        res.status(500).send({status:'error', error:error});
     }
 }
 const updateProduct = async (req,res)=>{
@@ -43,7 +44,7 @@ const updateProduct = async (req,res)=>{
         })
     }catch(error){
         logger.error(error);
-        res.send({status:'error', error:error});
+        res.status(500).send({status:'error', error:error});
     }
 };
 const deleteProduct = async(req,res)=>{
@@ -54,7 +55,7 @@ const deleteProduct = async(req,res)=>{
     })
     }catch(error){
         logger.error(error);
-        res.send({status:'error', error:error})
+        res.status(500).send({status:'error', error:error})
     }
 };
 
