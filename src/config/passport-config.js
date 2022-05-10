@@ -27,8 +27,8 @@ const initializePassport= ()=>{
                 password:createHash(password),
                 role:'user',
                 phone,
-                carts:cart._id,
-                profile_picture: req.protocol+"://"+req.hostname+":8080"+'/images/avatars/'+req.file.filename
+                cart:cart._id,
+                profile_picture: req.protocol+"://"+req.hostname+":8080"+'/images/'+req.file.filename
             }
             let result = await userService.save(newUser);
             return done(null,result)

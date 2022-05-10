@@ -4,7 +4,6 @@ import cookieParser from 'cookie-parser';
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import { messageService } from './services/services.js'
 
 import sessionRouter from './routes/sessions.js';
 import cartRouter from './routes/cart.js';
@@ -12,6 +11,7 @@ import productRouter from './routes/products.js';
 import initializePassport from './config/passport-config.js';
 import logger from './utils/logger.js';
 import {__dirname} from './dirname.js'
+import { messageService } from './services/services.js'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -66,7 +66,7 @@ io.on('connection', async socket=>{
         }
     }
     io.emit('users',connectedSockets)
-    let logs = await messageService.getAll();
+    let logs = await messageService.getAll()
     io.emit('logs',logs);
     socket.on('disconnect',reason=>{
         delete connectedSockets[socket.id]

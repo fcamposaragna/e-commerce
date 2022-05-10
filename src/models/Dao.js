@@ -12,11 +12,11 @@ export default class Dao{
             process.exit();
         })
         const populateProducts = function(next) {
-            this.populate('products');
+            this.populate('products.product');
             next();
         };
         const populateMessages = function(next){
-            this.populate('messages');
+            this.populate('author');
             next();
         }
         
@@ -26,7 +26,7 @@ export default class Dao{
         cartSchema.pre('findOne', populateProducts)
         const productSchema = mongoose.Schema(Product.schema,timestamp);
         const messageSchema = mongoose.Schema(Message.schema, timestamp);
-        //messageSchema.pre('find', populateMessages)
+        messageSchema.pre('find', populateMessages)
 
         this.models ={
             [User.model]:mongoose.model(User.model,userSchema),

@@ -6,7 +6,7 @@ export default class MessageService extends GenericQueries{
         super(dao, Messages.model)
     }
     // getAllAndPopulate = async(params) =>{
-    //     let result = await this.dao.models[Messages.model].find(params).populate('messages');
+    //     let result = await this.dao.models[Messages.model].find(params).populate('author');
     //     return result;
     // }
 }

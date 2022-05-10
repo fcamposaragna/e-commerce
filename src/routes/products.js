@@ -8,4 +8,5 @@ router.get('/:id', productController.getById);
 router.post('/', uploader.single('thumbnail'), productController.saveProduct)
 router.put('/:id', productController.updateProduct);
 router.delete('/:id', productController.deleteProduct);
+
 export default router;

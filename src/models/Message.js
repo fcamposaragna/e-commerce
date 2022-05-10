@@ -12,10 +12,10 @@ export default class Messages{
     static get schema(){
         return{
             author:{    
-                    type: Schema.Types.ObjectId,
-                    ref: 'users'
+                type: Schema.Types.ObjectId,
+                ref: 'Users'
             },
-            content: {type:String}
+            content: String
         }
     }
 }

@@ -17,7 +17,11 @@ export default class User{
             role:String,
             phone:String,
             profile_picture:String,
-            carts:{
+            status:{
+                type:Boolean,
+                default:true
+            },
+            cart:{
                 type:[{
                     type: Schema.Types.ObjectId,
                     ref: 'carts'

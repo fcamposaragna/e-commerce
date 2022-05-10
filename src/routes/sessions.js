@@ -38,7 +38,6 @@ router.post('/login',passportCall('login'),(req,res)=>{
     }else{
         user = req.user;
     }
-    //console.log(user)
     let token = jwt.sign(user,config.jwt.SECRET)
     res.cookie(config.jwt.COOKIE_NAME,token,{
         httpOnly:true,

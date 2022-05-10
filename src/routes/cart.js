@@ -3,9 +3,10 @@ import cartController from '../controllers/carts.js'
 const router = express.Router();
 
 router.post('/', cartController.saveCart);
-router.get('/:id/products', cartController.getById);
-router.post('/:id/products', cartController.addProduct);  
+router.get('/:cid', cartController.getById);
+router.post('/:cid/products/:pid', cartController.addProduct);  
 router.delete('/:id', cartController.deleteCart);
-router.delete('/:id/products/:id_prod', cartController.deleteProduct);
+router.delete('/:cid/products/:pid', cartController.deleteProduct);
+
 
 export default router;
